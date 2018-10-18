@@ -23,9 +23,9 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
     }
     public void initBoard() {
-        for (int i = 50; i < 5; i++) { //TILE X VALUES
-            for (int j = 50; j < 5; j++) { //TILE Y VALUES
-                board.add(new Tile(i*50,j*50));
+        for (int i = 0; i < 5; i++) { //TILE X VALUES
+            for (int j = 0; j < 5; j++) { //TILE Y VALUES
+                board.add(new Tile(250+i*50,250+j*50));
             }
         }
     }
