@@ -6,37 +6,62 @@
 package adrift;
 
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 
 /**
  *
  * @author 073787251
  */
 public class MainFrame extends javax.swing.JFrame {
+
     static ArrayList<Tile> board = new ArrayList<>();
     boolean keepGoing = true;
+
+    private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
+    private static final String rotRight = "rotate right";
+    private static final String rotLeft = "rotate left";
+    private static final String moveUp = "move up";
+    private static final String moveDown = "move down";
+
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initBoard();
         initComponents();
+        canvas1.getInputMap(IFW).put(KeyStroke.getKeyStroke("LEFT"), rotRight);
+        canvas1.getInputMap(IFW).put(KeyStroke.getKeyStroke("RIGHT"), rotLeft);
+        canvas1.getInputMap(IFW).put(KeyStroke.getKeyStroke("UP"), moveUp);
+        canvas1.getInputMap(IFW).put(KeyStroke.getKeyStroke("DOWN"), moveDown);
+
+        canvas1.getActionMap().put(rotRight, new rotAction(3));
+        canvas1.getActionMap().put(rotLeft, new rotAction(-3));
+        canvas1.getActionMap().put(moveUp, new moveAction(3));
+        canvas1.getActionMap().put(moveDown, new moveAction(-3));
     }
+
     public void initBoard() {
         for (int i = 0; i < 5; i++) { //TILE X VALUES
             for (int j = 0; j < 5; j++) { //TILE Y VALUES
-                board.add(new Tile(250+i*50,250+j*50));
+                board.add(new Tile(125 + i * 100, 125 + j * 100));
             }
         }
     }
+
     public void stop() {
         keepGoing = false;
     }
-    public void runLoop () {
+
+    public void runLoop() {
         while (keepGoing) {
             repaint();
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -114,6 +139,41 @@ public class MainFrame extends javax.swing.JFrame {
                 new MainFrame().setVisible(true);
             }
         });
+    }
+
+    private class moveAction extends AbstractAction {
+
+        int move;
+
+        moveAction(int move) {
+            this.move = move;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            repaint();
+            if (canvas1.collided) {
+               for (Tile t : board) {
+                   t.y += move;
+               }
+               Tile.centerY += move;
+            }
+        }
+    }
+
+    private class rotAction extends AbstractAction {
+
+        int rot;
+
+        rotAction(int rot) {
+            this.rot = rot;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Tile.rotScale += rot;
+            repaint();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

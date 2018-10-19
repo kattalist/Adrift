@@ -6,30 +6,70 @@
 package adrift;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+
 /**
  *
  * @author 073787251
  */
 public class Canvas extends javax.swing.JPanel {
+    boolean collided = true;
     boolean keepGoing = true;
+
     /**
      * Creates new form Canvas
      */
     public Canvas() {
         initComponents();
     }
+
     public void drawBoard(Graphics g) {
-        for (Tile t: MainFrame.board) {
+        for (Tile t : MainFrame.board) {
             t.display(g);
         }
     }
+
+    public void drawSquare(Graphics g) {//By doing this, we make sure you can't see the white lines
+        Graphics2D g2d = (Graphics2D) g;
+        Rectangle2D rectBoard = new Rectangle2D.Double(MainFrame.board.get(0).x,MainFrame.board.get(0).y,100,100);
+        AffineTransform transform = new AffineTransform();
+        AffineTransform old = g2d.getTransform();
+        transform.rotate(Math.toRadians(Tile.rotScale), Tile.centerX, Tile.centerY);
+        Shape rbRotated = transform.createTransformedShape(rectBoard);
+        Point2D charPoint = new Point2D.Double(375,375);
+        checkSquareCollision(rbRotated, charPoint);
+        g2d.transform(transform);
+        g.setColor(Color.gray);
+        g.fillRect(MainFrame.board.get(0).x, MainFrame.board.get(0).y, 500, 500);
+        g2d.setTransform(old);
+    }
+    
+    public void checkSquareCollision(Shape currentBoard, Point2D centerPoint) {
+        if (currentBoard.contains(centerPoint)) {
+            collided = true;
+        } else {
+            collided = false;
+        }
+    }
+
+    public void drawChar(Graphics g) {
+        g.setColor(Color.black);
+        g.fillOval(370, 370, 10, 10);
+    }
+
     @Override
-    public void paintComponent (Graphics g) {
+    public void paintComponent(Graphics g) {
         paint(g);
     }
-    public void paint (Graphics g) {
+
+    public void paint(Graphics g) {
+        drawSquare(g);
         drawBoard(g);
+        drawChar(g);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
