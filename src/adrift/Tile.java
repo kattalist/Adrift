@@ -15,12 +15,11 @@ import java.awt.geom.Rectangle2D;
  * @author 073787251
  */
 public class Tile {
-    public int x, y;
-    public int rotX, rotY;
+    public double x, y;
     static int rotScale = 0;
     static int centerX = 375;
     static int centerY = 375;
-    Tile (int tx, int ty) {
+    Tile (double tx, double ty) {
         x = tx;
         y = ty;
     }
@@ -28,11 +27,10 @@ public class Tile {
         Graphics2D g2d = (Graphics2D)g;
         AffineTransform transform = new AffineTransform();
         AffineTransform old = g2d.getTransform();
-        transform.rotate(Math.toRadians(rotScale),centerX,centerY);
-        Point2D charPoint = new Point2D.Double(375,375);
+        transform.rotate(Math.toRadians(rotScale),Canvas.charPoint.getX(),Canvas.charPoint.getY());
         g2d.transform(transform);
         g.setColor(Color.gray);
-        g.fillRect(x, y, 100, 100);
+        g.fillRect((int)(centerX+x-375), (int)(centerY+y-375), 100, 100);
         g2d.setTransform(old);
     }
 }

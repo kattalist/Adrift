@@ -15,6 +15,7 @@ import java.awt.geom.Rectangle2D;
  * @author 073787251
  */
 public class Canvas extends javax.swing.JPanel {
+    static Point2D charPoint = new Point2D.Double(375,375);
     boolean collided = true;
     boolean keepGoing = true;
 
@@ -36,24 +37,25 @@ public class Canvas extends javax.swing.JPanel {
         Rectangle2D rectBoard = new Rectangle2D.Double(MainFrame.board.get(0).x,MainFrame.board.get(0).y,100,100);
         AffineTransform transform = new AffineTransform();
         AffineTransform old = g2d.getTransform();
-        transform.rotate(Math.toRadians(Tile.rotScale), Tile.centerX, Tile.centerY);
+        transform.rotate(Math.toRadians(Tile.rotScale), charPoint.getX(), charPoint.getY());
         Shape rbRotated = transform.createTransformedShape(rectBoard);
-        Point2D charPoint = new Point2D.Double(375,375);
         checkSquareCollision(rbRotated, charPoint);
         g2d.transform(transform);
         g.setColor(Color.gray);
-        g.fillRect(MainFrame.board.get(0).x, MainFrame.board.get(0).y, 500, 500);
+        g.fillRect((int)(Tile.centerX + MainFrame.board.get(0).x - 375), (int)(Tile.centerY + MainFrame.board.get(0).y - 375), 500, 500);
+        System.out.println(Tile.centerX+","+Tile.centerY);
         g2d.setTransform(old);
     }
     
-    public void checkSquareCollision(Shape currentBoard, Point2D centerPoint) {
-        if (currentBoard.contains(centerPoint)) {
-            collided = true;
-        } else {
-            collided = false;
-        }
+    public void checkSquareCollision(Shape currentBoard, Point2D charPoint) {
+        collided = (rotatePoint(charPoint).getX() <= Tile.centerX + MainFrame.board.get(0).x - 375 + 500 && rotatePoint(charPoint).getX() >= MainFrame.board.get(0).x && rotatePoint(charPoint).getY() <= MainFrame.board.get(0).y + 500 && rotatePoint(charPoint).getY() >= MainFrame.board.get(0).y);
     }
 
+    public Point2D rotatePoint(Point2D oldPoint) {
+        double newpX = 375 + (oldPoint.getX()-375)*Math.cos(-Tile.rotScale) - (oldPoint.getY()-375)*Math.sin(-Tile.rotScale);
+        double newpY = 375 + (oldPoint.getX()-375)*Math.sin(-Tile.rotScale) - (oldPoint.getY()-375)*Math.cos(-Tile.rotScale);
+        return new Point2D.Double(newpX, newpY);
+    }
     public void drawChar(Graphics g) {
         g.setColor(Color.black);
         g.fillOval(370, 370, 10, 10);
@@ -64,6 +66,7 @@ public class Canvas extends javax.swing.JPanel {
         paint(g);
     }
 
+    @Override
     public void paint(Graphics g) {
         drawSquare(g);
         drawBoard(g);

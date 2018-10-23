@@ -45,9 +45,9 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     public void initBoard() {
-        for (int i = 0; i < 5; i++) { //TILE X VALUES
-            for (int j = 0; j < 5; j++) { //TILE Y VALUES
-                board.add(new Tile(125 + i * 100, 125 + j * 100));
+        for (double i = 0; i < 5; i++) { //TILE X VALUES
+            for (double j = 0; j < 5; j++) { //TILE Y VALUES
+                board.add(new Tile(Tile.centerX + (i-2.5) * 100, Tile.centerY + (j-2.5) * 100));
             }
         }
     }
@@ -142,7 +142,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private class moveAction extends AbstractAction {
-
+        Graphics g;
         int move;
 
         moveAction(int move) {
@@ -153,11 +153,12 @@ public class MainFrame extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent e) {
             repaint();
             if (canvas1.collided) {
+               //Create straight line to 375,0
                for (Tile t : board) {
                    t.y += move;
                }
                Tile.centerY += move;
-            }
+            } 
         }
     }
 
