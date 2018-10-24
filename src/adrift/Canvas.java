@@ -42,7 +42,7 @@ public class Canvas extends javax.swing.JPanel {
         checkSquareCollision(rbRotated, charPoint);
         g2d.transform(transform);
         g.setColor(Color.gray);
-        g.fillRect((int)(Tile.centerX + MainFrame.board.get(0).x - 375), (int)(Tile.centerY + MainFrame.board.get(0).y - 375), 500, 500);
+        g.fillRect((int)(MainFrame.board.get(0).x), (int)(MainFrame.board.get(0).y), 500, 500);
         System.out.println(Tile.centerX+","+Tile.centerY);
         g2d.setTransform(old);
     }
@@ -51,7 +51,7 @@ public class Canvas extends javax.swing.JPanel {
         collided = (rotatePoint(charPoint).getX() <= Tile.centerX + MainFrame.board.get(0).x - 375 + 500 && rotatePoint(charPoint).getX() >= MainFrame.board.get(0).x && rotatePoint(charPoint).getY() <= MainFrame.board.get(0).y + 500 && rotatePoint(charPoint).getY() >= MainFrame.board.get(0).y);
     }
 
-    public Point2D rotatePoint(Point2D oldPoint) {
+    public static Point2D rotatePoint(Point2D oldPoint) {
         double newpX = 375 + (oldPoint.getX()-375)*Math.cos(-Tile.rotScale) - (oldPoint.getY()-375)*Math.sin(-Tile.rotScale);
         double newpY = 375 + (oldPoint.getX()-375)*Math.sin(-Tile.rotScale) - (oldPoint.getY()-375)*Math.cos(-Tile.rotScale);
         return new Point2D.Double(newpX, newpY);

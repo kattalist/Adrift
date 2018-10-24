@@ -30,11 +30,22 @@ public class Tile {
         transform.rotate(Math.toRadians(rotScale),Canvas.charPoint.getX(),Canvas.charPoint.getY());
         g2d.transform(transform);
         g.setColor(Color.gray);
-        g.fillRect((int)(centerX+x-375), (int)(centerY+y-375), 100, 100);
+        g.fillRect((int)(x), (int)(y), 100, 100);
         g.setColor(Color.red);
+        Point2D rotCenterPoint = new Point2D.Double(centerX,centerY);
         g.fillOval(centerX, centerY, 5, 5);
         g2d.setTransform(old);
         g.setColor(Color.red);
+        Point2D realCenterPoint = new Point2D.Double(375,375);
+        g.drawLine((int)rot_point(375,375,rotCenterPoint,rotScale%360).getX(),(int)rot_point(375,375,rotCenterPoint,rotScale%360).getY(),(int)Canvas.rotatePoint(realCenterPoint).getX(),(int)Canvas.rotatePoint(realCenterPoint).getY());
         g.fillOval(375, 375, 5, 5);
+    }
+    public static Point2D rot_point (float cx, float cy, Point2D oldPoint, double angle) {
+        double s = Math.sin(Math.toRadians(angle));
+        double c = Math.cos(Math.toRadians(angle));
+        double xnew = (oldPoint.getX()-cx)*c - (oldPoint.getY()-cy)*s;
+        double ynew = (oldPoint.getX()-cx)*s + (oldPoint.getY()-cy)*c;
+        return new Point2D.Double(xnew + cx,ynew + cy);
+        
     }
 }
