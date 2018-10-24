@@ -153,7 +153,7 @@ public class MainFrame extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent e) {
             repaint();
             if (canvas1.collided) {
-               //Create straight line to 375,0
+               //Create straight line to rotated center point
                for (Tile t : board) {
                    t.y += move;
                }

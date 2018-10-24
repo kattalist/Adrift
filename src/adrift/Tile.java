@@ -31,6 +31,10 @@ public class Tile {
         g2d.transform(transform);
         g.setColor(Color.gray);
         g.fillRect((int)(centerX+x-375), (int)(centerY+y-375), 100, 100);
+        g.setColor(Color.red);
+        g.fillOval(centerX, centerY, 5, 5);
         g2d.setTransform(old);
+        g.setColor(Color.red);
+        g.fillOval(375, 375, 5, 5);
     }
 }
