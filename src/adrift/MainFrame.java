@@ -156,6 +156,8 @@ public class MainFrame extends javax.swing.JFrame {
                //Create straight line to rotated center point
                for (Tile t : board) {
                    t.y += move;
+                   //t.x += Tile.vx;
+                   //t.y += Tile.vy;
                }
                Tile.centerY += move;
             } 

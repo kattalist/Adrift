@@ -43,7 +43,6 @@ public class Canvas extends javax.swing.JPanel {
         g2d.transform(transform);
         g.setColor(Color.gray);
         g.fillRect((int)(MainFrame.board.get(0).x), (int)(MainFrame.board.get(0).y), 500, 500);
-        System.out.println(Tile.centerX+","+Tile.centerY);
         g2d.setTransform(old);
     }
     
